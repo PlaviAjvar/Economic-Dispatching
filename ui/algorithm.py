@@ -13,12 +13,12 @@ def cost_vector(P, A, B, C):
     return Cost
 
 # mock algorithm for testing gui
-def mock_algorithm(P_min, P_max, P_load, P_loss, A, B, C, max_iter = 10000):
+def mock_algorithm(P_min, P_max, p_load, p_loss, A, B, C, max_iter = 10000):
     n_g = len(P_min)
     return (random.sample(range(1, 1000), n_g), max_iter / 2, 1.14, 7.62, 0.3)
 
 
 # method to solve Economic dispatching using Active Set method (Quadratic programming)
 
-def run_algorithm(P_min, P_max, P_load, P_loss, A, B, C, max_iter = 10000):
-    return mock_algorithm(P_min, P_max, P_load, P_loss, A, B, C, max_iter)
+def run_algorithm(P_min, P_max, p_load, p_loss, A, B, C, max_iter = 10000):
+    return mock_algorithm(P_min, P_max, p_load, p_loss, A, B, C, max_iter = 10000)

@@ -192,9 +192,9 @@ def open_optimize():
     ui.max_iter_txt.clear()
     
     # run algorithm
-    (ID, Key, Name, P_min, P_max, P_load, P_loss, A, B, C) = database.load_data()
+    (ID, Key, Name, P_min, P_max, p_load, p_loss, A, B, C) = database.load_data()
     (P, iter_count, total_price, total_power, total_power_loss) = algorithm.run_algorithm(P_min, 
-    P_max, P_load, P_loss, A, B, C, max_iter)
+    P_max, p_load, p_loss, A, B, C, max_iter)
     
     # export solution to database
     database.export_solution(ID, Key, Name, P, P_min, P_max, algorithm.cost_vector(P, A, B, C))

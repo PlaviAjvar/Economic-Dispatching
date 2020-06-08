@@ -25,8 +25,8 @@ def load_data():
     
     # numbers obtained by adding up load and loss powers for all components
     # from database of components
-    P_load = 0
-    P_loss = 0
+    p_load = 0
+    p_loss = 0
 
     # pull lines from file and make arrays
     with open("mock_database/generators.txt", "r") as genfile:
@@ -43,11 +43,11 @@ def load_data():
 
     with open("mock_database/network.txt", "r") as netfile:
         for line in netfile:
-            id, key, name, P_loadv, P_lossv, date, time = tuple(line.split())
-            P_load += float(P_loadv)
-            P_loss += float(P_lossv)
+            id, key, name, p_loadv, p_lossv, date, time = tuple(line.split())
+            p_load += float(p_loadv)
+            p_loss += float(p_lossv)
 
-    return (ID, Key, Name, P_min, P_max, P_load, P_loss, A, B, C)
+    return (ID, Key, Name, P_min, P_max, p_load, p_loss, A, B, C)
 
 
 
