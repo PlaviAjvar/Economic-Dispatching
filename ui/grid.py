@@ -109,8 +109,8 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.grid_img.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" color:#ffffff;\">Grid</span></p></body></html>"))
-        self.powerLossLabel.setText(_translate("MainWindow", "Power loss [kW]:"))
-        self.PowerUsageLabel.setText(_translate("MainWindow", "Power usage [kW]: "))
+        self.powerLossLabel.setText(_translate("MainWindow", "Power loss [MW]:"))
+        self.PowerUsageLabel.setText(_translate("MainWindow", "Power usage [MW]: "))
         self.iDLabelin.setText(_translate("MainWindow", "ID:"))
         self.nameLabel.setText(_translate("MainWindow", "Name: "))
         self.add_ele_btn.setText(_translate("MainWindow", "Add Element"))

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>452</width>
-    <height>570</height>
+    <width>760</width>
+    <height>438</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,7 +21,7 @@
        <number>20</number>
       </property>
       <property name="columnCount">
-       <number>4</number>
+       <number>7</number>
       </property>
       <row/>
       <row/>
@@ -43,6 +43,9 @@
       <row/>
       <row/>
       <row/>
+      <column/>
+      <column/>
+      <column/>
       <column/>
       <column/>
       <column/>
@@ -75,7 +78,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>452</width>
+     <width>760</width>
      <height>21</height>
     </rect>
    </property>

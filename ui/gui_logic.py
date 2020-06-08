@@ -23,10 +23,28 @@ def gen_load():
     ui_gdata.tableWidget.setRowCount(0)
     gdata_col = 10
     ui_gdata.tableWidget.setColumnCount(gdata_col)
-    
-    for row_number, row in enumerate(data):
+
+    # add a row
+    ui_gdata.tableWidget.insertRow(0)
+    offset = 1
+
+    # add row with labels for better readibility of database
+    ui_gdata.tableWidget.setItem(0, 0, QtWidgets.QTableWidgetItem("Database ID"))
+    ui_gdata.tableWidget.setItem(0, 1, QtWidgets.QTableWidgetItem("ID"))
+    ui_gdata.tableWidget.setItem(0, 2, QtWidgets.QTableWidgetItem("Name"))
+    ui_gdata.tableWidget.setItem(0, 3, QtWidgets.QTableWidgetItem("P_low [MW]"))
+    ui_gdata.tableWidget.setItem(0, 4, QtWidgets.QTableWidgetItem("P_high [MW]"))
+    ui_gdata.tableWidget.setItem(0, 5, QtWidgets.QTableWidgetItem("a [$/h]"))
+    ui_gdata.tableWidget.setItem(0, 6, QtWidgets.QTableWidgetItem("b [$/h]"))
+    ui_gdata.tableWidget.setItem(0, 7, QtWidgets.QTableWidgetItem("c [$/h]"))
+    ui_gdata.tableWidget.setItem(0, 8, QtWidgets.QTableWidgetItem("Date"))
+    ui_gdata.tableWidget.setItem(0, 9, QtWidgets.QTableWidgetItem("Time"))
+
+    for table_row_number, row in enumerate(data):
+        # because we add some rows before
+        row_number = table_row_number + offset
         ui_gdata.tableWidget.insertRow(row_number)
-        for col_number, entry in enumerate(row):   
+        for col_number, entry in enumerate(row):       
             ui_gdata.tableWidget.setItem(row_number, col_number, QtWidgets.QTableWidgetItem(str(entry)))
 
 # helper function for loading network database into table widget
@@ -38,7 +56,21 @@ def net_load():
     ndata_col = 7
     ui_ndata.tableWidget.setColumnCount(ndata_col)
 
-    for row_number, row in enumerate(data):
+    # add a row
+    ui_ndata.tableWidget.insertRow(0)
+    offset = 1
+
+    # add row with labels for readibility
+    ui_ndata.tableWidget.setItem(0, 0, QtWidgets.QTableWidgetItem("Database ID"))
+    ui_ndata.tableWidget.setItem(0, 1, QtWidgets.QTableWidgetItem("ID"))
+    ui_ndata.tableWidget.setItem(0, 2, QtWidgets.QTableWidgetItem("Name"))
+    ui_ndata.tableWidget.setItem(0, 3, QtWidgets.QTableWidgetItem("P_load [MW]"))
+    ui_ndata.tableWidget.setItem(0, 4, QtWidgets.QTableWidgetItem("P_loss [MW]"))
+    ui_ndata.tableWidget.setItem(0, 5, QtWidgets.QTableWidgetItem("Date"))
+    ui_ndata.tableWidget.setItem(0, 6, QtWidgets.QTableWidgetItem("Time"))
+
+    for table_row_number, row in enumerate(data):
+        row_number = table_row_number + offset
         ui_ndata.tableWidget.insertRow(row_number)
         for col_number, entry in enumerate(row):
             ui_ndata.tableWidget.setItem(row_number, col_number, QtWidgets.QTableWidgetItem(str(entry)))
@@ -57,14 +89,29 @@ def sol_load():
     P_total = 0
     cost_total = 0
 
-    for row_number, row in enumerate(data):
+    # add two rows
+    ui_sol.tableWidget.insertRow(0)
+    offset = 1
+
+    # add row with labels for readibility
+    ui_sol.tableWidget.setItem(0, 0, QtWidgets.QTableWidgetItem("Database ID"))
+    ui_sol.tableWidget.setItem(0, 1, QtWidgets.QTableWidgetItem("ID"))
+    ui_sol.tableWidget.setItem(0, 2, QtWidgets.QTableWidgetItem("Name"))
+    ui_sol.tableWidget.setItem(0, 3, QtWidgets.QTableWidgetItem("Power [MW]"))
+    ui_sol.tableWidget.setItem(0, 4, QtWidgets.QTableWidgetItem("P_low [MW]"))
+    ui_sol.tableWidget.setItem(0, 5, QtWidgets.QTableWidgetItem("P_high [MW]"))
+    ui_sol.tableWidget.setItem(0, 6, QtWidgets.QTableWidgetItem("Cost [$]"))
+
+
+    for table_row_number, row in enumerate(data):
+        row_number = table_row_number + offset
         ui_sol.tableWidget.insertRow(row_number)
         for col_number, entry in enumerate(row):
             ui_sol.tableWidget.setItem(row_number, col_number, QtWidgets.QTableWidgetItem(str(entry)))
             if col_number == sol_col - 4:
-                P_total += entry
+                P_total += float(entry)
             elif col_number == sol_col - 1:
-                cost_total += entry
+                cost_total += float(entry)
     
     ui_sol.total_cost = "The total cost of electrical production is " + str(cost_total)
     ui_sol.supplied_power = "The total supplied power from the generators is " + str(P_total)
@@ -141,19 +188,21 @@ def open_optimize():
         max_iter = default_iter
     else:
         max_iter = str(text_box)
+    # clear the textbox
+    ui.max_iter_txt.clear()
     
     # run algorithm
-    (ID, Name, Key, P_min, P_max, P_load, P_loss, A, B, C) = database.load_data()
+    (ID, Key, Name, P_min, P_max, P_load, P_loss, A, B, C) = database.load_data()
     (P, iter_count, total_price, total_power, total_power_loss) = algorithm.run_algorithm(max_iter, P_min, 
     P_max, P_load, P_loss, A, B, C)
     
     # export solution to database
-    database.export_solution(ID, Name, Key, P, P_min, P_max, algorithm.cost(P, A, B, C))
+    database.export_solution(ID, Key, Name, P, P_min, P_max, algorithm.cost(P, A, B, C))
     
     # change textbook to display information about the solution
     _translate = QtCore.QCoreApplication.translate
     ui_opt.textEdit.setText("Number of iterations: " + str(iter_count) + "\nTotal price: " + str(total_price) + 
-                    "\nTotal power: " + str(total_power) + "\nTotal power loss: " + str(total_power_loss))
+                    " [$]\nTotal power: " + str(total_power) + " [MW]\nTotal power loss: " + str(total_power_loss) + " [MW]")
 
 # bind everything in solution showing panel
 def sol_ui_bindings():
@@ -206,7 +255,7 @@ def add_generator():
     # get data from textboxes
     # just add zero so that "" is defined as zero :P
     key = ui_gen.iDLineEditin.displayText()
-    name_add = ui_gen.nameLineEdit_add.displayText()
+    name = ui_gen.nameLineEdit_add.displayText()
     P_min = float("0" + ui_gen.pminLineEdit.displayText())
     P_max = float("0" + ui_gen.pmaxLineEdit_2.displayText())
     a = float("0" + ui_gen.aLineEdit.displayText())
@@ -215,9 +264,18 @@ def add_generator():
 
     # add to database
     try:
-        database.add_generator(name_add, key, P_min, P_max, a, b, c)
+        database.add_generator(key, name, P_min, P_max, a, b, c)
     except Exception as e:
         show_fail(str(e))
+
+    # clear textboxes
+    ui_gen.iDLineEditin.clear()
+    ui_gen.nameLineEdit_add.clear()
+    ui_gen.pminLineEdit.clear()
+    ui_gen.pmaxLineEdit_2.clear()
+    ui_gen.aLineEdit.clear()
+    ui_gen.bLineEdit.clear()
+    ui_gen.cLineEdit.clear()
 
 # add generator to database
 def remove_generator():
@@ -231,6 +289,9 @@ def remove_generator():
         database.remove_generator(key)
     except Exception as e:
         show_fail(str(e))
+    
+    # clear textboxes
+    ui_gen.idLineEdit.clear()
         
 
 # helper function which gives popup when failing to add or remove to db
@@ -239,6 +300,7 @@ def show_fail(text):
     msg.setWindowTitle("Error")
     msg.setText(text)
     msg.setIcon(QtWidgets.QMessageBox.Critical)
+    msg.exec_()
 
 # add element to database
 def add_element():
@@ -253,9 +315,16 @@ def add_element():
 
     # add to database
     try:
-        database.add_element(name, key, P_load, P_loss)
+        database.add_element(key, name, P_load, P_loss)
     except Exception as e:
         show_fail(str(e))
+    
+    # clear the textboxes
+    ui_net.iDLineEditin.clear()
+    ui_net.nameLineEdit.clear()
+    ui_net.PowerUsageLineEdit.clear()
+    ui_net.powerLossLineEdit.clear()
+
 
 # remove element from database
 def remove_element():
@@ -269,6 +338,10 @@ def remove_element():
         database.remove_element(key)
     except Exception as e:
         show_fail(str(e))
+    
+    # clear the textbox
+    ui_net.iDLineEdit.clear()
+
 
 if __name__ == "__main__":
     import sys

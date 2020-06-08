@@ -74,7 +74,7 @@
       <item row="3" column="0">
        <widget class="QLabel" name="pminLabel">
         <property name="text">
-         <string>P_min [kW] =</string>
+         <string>P_min [MW] =</string>
         </property>
        </widget>
       </item>
@@ -84,7 +84,7 @@
       <item row="4" column="0">
        <widget class="QLabel" name="pmaxLabel">
         <property name="text">
-         <string>P_max [kW] =</string>
+         <string>P_max [MW] =</string>
         </property>
        </widget>
       </item>
@@ -94,7 +94,7 @@
       <item row="5" column="0">
        <widget class="QLabel" name="aLabel">
         <property name="text">
-         <string>a [$ / kW] =</string>
+         <string>a [$ / h] =</string>
         </property>
        </widget>
       </item>
@@ -104,7 +104,7 @@
       <item row="6" column="0">
        <widget class="QLabel" name="bLabel">
         <property name="text">
-         <string>b [$ / kW] =</string>
+         <string>b [$ / h] =</string>
         </property>
        </widget>
       </item>
@@ -114,7 +114,7 @@
       <item row="7" column="0">
        <widget class="QLabel" name="cLabel">
         <property name="text">
-         <string>c [$ / kW] =</string>
+         <string>c [$ / h] =</string>
         </property>
        </widget>
       </item>

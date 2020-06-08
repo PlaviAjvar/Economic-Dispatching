@@ -68,7 +68,7 @@
       <item row="5" column="0">
        <widget class="QLabel" name="powerLossLabel">
         <property name="text">
-         <string>Power loss [kW]:</string>
+         <string>Power loss [MW]:</string>
         </property>
        </widget>
       </item>
@@ -78,7 +78,7 @@
       <item row="4" column="0">
        <widget class="QLabel" name="PowerUsageLabel">
         <property name="text">
-         <string>Power usage [kW]: </string>
+         <string>Power usage [MW]: </string>
         </property>
        </widget>
       </item>
