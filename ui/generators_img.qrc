@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="generators_prefix">
+    <file>unnamed.jpg</file>
+  </qresource>
+</RCC>

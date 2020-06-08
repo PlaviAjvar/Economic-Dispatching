@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="dispatching_prefix">
+    <file>Screenshot_16.png</file>
+  </qresource>
+</RCC>
