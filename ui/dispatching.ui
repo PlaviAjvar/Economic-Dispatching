@@ -181,7 +181,7 @@
          </size>
         </property>
         <property name="text">
-         <string>Result History</string>
+         <string>Display Results</string>
         </property>
        </widget>
       </item>

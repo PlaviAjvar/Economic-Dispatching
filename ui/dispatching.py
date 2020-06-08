@@ -109,5 +109,5 @@ class Ui_MainWindow(object):
         self.editnetwork_btn.setText(_translate("MainWindow", "Edit Network"))
         self.max_iter_label.setText(_translate("MainWindow", "Maximum number of iterations:"))
         self.optimize_btn.setText(_translate("MainWindow", "Optimize"))
-        self.resultHistory.setText(_translate("MainWindow", "Result History"))
+        self.resultHistory.setText(_translate("MainWindow", "Display Results"))
 import dispatching_img_rc
