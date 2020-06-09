@@ -187,22 +187,30 @@ def open_optimize():
     if text_box == "":
         max_iter = default_iter
     else:
-        max_iter = str(text_box)
+        max_iter = int(text_box)
     # clear the textbox
     ui.max_iter_txt.clear()
     
     # run algorithm
     (ID, Key, Name, P_min, P_max, p_load, p_loss, A, B, C) = database.load_data()
-    (P, iter_count, total_price, total_power, total_power_loss) = algorithm.run_algorithm(P_min, 
-    P_max, p_load, p_loss, A, B, C, max_iter)
+    try:
+        (P, iter_count, total_price, total_power, total_power_loss) = algorithm.run_algorithm(P_min, 
+        P_max, p_load, p_loss, A, B, C, max_iter)
+
+        # export solution to database
+        database.export_solution(ID, Key, Name, P, P_min, P_max, algorithm.cost_vector(P, A, B, C))
+
+        # change textbook to display information about the solution
+        _translate = QtCore.QCoreApplication.translate
+        ui_opt.textEdit.setText("Number of iterations: " + str(iter_count) + "\nTotal price: " + str(total_price) + 
+                        " [$]\nTotal power: " + str(total_power) + " [MW]\nTotal power loss: " + str(total_power_loss) + " [MW]")
+    except Exception as e:
+        # display error message
+        show_fail(str(e))    
+
+        # then change the textbox to error has occured
+        ui_opt.textEdit.setText("No information. Error has occured.")
     
-    # export solution to database
-    database.export_solution(ID, Key, Name, P, P_min, P_max, algorithm.cost_vector(P, A, B, C))
-    
-    # change textbook to display information about the solution
-    _translate = QtCore.QCoreApplication.translate
-    ui_opt.textEdit.setText("Number of iterations: " + str(iter_count) + "\nTotal price: " + str(total_price) + 
-                    " [$]\nTotal power: " + str(total_power) + " [MW]\nTotal power loss: " + str(total_power_loss) + " [MW]")
 
 # bind everything in solution showing panel
 def sol_ui_bindings():

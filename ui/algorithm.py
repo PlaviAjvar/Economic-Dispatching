@@ -57,6 +57,15 @@ def cost_vector(P, A, B, C):
 # p_min(i) <= p(i) <= p_max(i)
 
 def run_algorithm(P_min, P_max, p_load, p_loss, A, B, C, max_iter = 10000):
+    # first check if data is consistent
+    epsilon = 1e-9
+    if sum(P_max) < p_load + p_loss - epsilon:
+        raise Exception("Invalid data. The generators can't supply enough power to the network.")
+    if sum(P_min) > p_load + p_loss + epsilon:
+        raise Exception("Invalid data. The generators supply more power than is present in the network.")
+    # see step_scaler method
+    random.seed() 
+
     # first find a feasible point
     n_g = len(P_min)
     P_init = feasible_point(P_min, P_max, p_load, p_loss)
@@ -65,9 +74,9 @@ def run_algorithm(P_min, P_max, p_load, p_loss, A, B, C, max_iter = 10000):
     # also initialize the corresponding working set of (inequality) constraints
     W = []
     for i in range(n_g):
-        if math.isclose(P[i], P_min[i]):
+        if isclose(P[i,0], P_min[i]):
             W.append((i, P_min[i], False))
-        elif math.isclose(P[i], P_max[i]):
+        elif isclose(P[i,0], P_max[i]):
             W.append((i, P_max[i], True))
 
     # form matrix H and vector g
@@ -75,7 +84,6 @@ def run_algorithm(P_min, P_max, p_load, p_loss, A, B, C, max_iter = 10000):
     for i in range(n_g):
         H[i,i] = 2*A[i]
     g = np.array([[B[i]] for i in range(n_g)], dtype=float)
-    epsilon = 1e-9
 
     for k in range(max_iter):
         # transform the minimization problem from over p to over dk
@@ -90,7 +98,7 @@ def run_algorithm(P_min, P_max, p_load, p_loss, A, B, C, max_iter = 10000):
         (dk, lam) = QP_sub(Ak, H, gk)
 
         # if dk is near zero (all components within epsilon-zone around zero)
-        if all(math.isclose(dk_e, 0) for dk_e in dk):
+        if all(isclose(dk_e, 0) for dk_e in dk):
             # minimum lambda over the active inequality constraints and corresponding index
             n_act = len(W) + 1
             lam_min, q = min([(lam[i,0], i-1) for i in range(1, n_act)])
@@ -124,11 +132,9 @@ def run_algorithm(P_min, P_max, p_load, p_loss, A, B, C, max_iter = 10000):
                     W.append((p, P_min[p], False))
 
     # if we've reached here then the max number of iterations has been exceded
-    # return the current feasible point (best we can do) and max number of iterations + 1
-    # -1 for all other parameters
+    # raise exception
 
-    P_final = [P[i, 0] for i in range(n_g)]
-    return (P_final, max_iter + 1, -1, -1, -1)
+    raise Exception("Maximum number of iterations has been exceeded.")
 
 
 # helper function which finds total cost for given vector of generator powers P
@@ -269,14 +275,21 @@ def step_scaler(W, P, dk, P_min, P_max):
             d = dk[i, 0]
 
             # the imposed conditions
-            if d > epsilon and (P_max[i] - P[i][0]) / d < t:
-                t =  (P_max[i] - P[i][0]) / d
-                p = i
-                is_up = True
-            
-            if d < -epsilon and (P_min[i] - P[i][0]) / d < t:
-                t = (P_min[i] - P[i][0]) / d
-                p = i
-                is_up = False
+            if d > epsilon:
+                if (P_max[i] - P[i,0]) / d < t or (isclose(t, (P_max[i] - P[i,0]) / d) and random.randint(0,1) == 0):
+                    t = (P_max[i] - P[i,0]) / d
+                    p = i
+                    is_up = True
+
+            if d < -epsilon:
+                if (P_min[i] - P[i,0]) / d < t or (isclose(t, (P_min[i] - P[i,0]) / d) and random.randint(0,1) == 0):
+                    t = (P_min[i] - P[i,0]) / d
+                    p = i
+                    is_up = False
 
     return (t, p, is_up)
+
+
+# pythons default implementation is rather unaplicable here
+def isclose(a, b, eps = 1e-9):
+    return abs(a - b) < eps
