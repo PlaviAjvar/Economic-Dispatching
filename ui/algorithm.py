@@ -14,12 +14,6 @@ def cost_vector(P, A, B, C):
 
     return Cost
 
-# mock algorithm for testing gui
-def mock_algorithm(P_min, P_max, p_load, p_loss, A, B, C, max_iter = 10000):
-    n_g = len(P_min)
-    return (random.sample(range(1, 1000), n_g), max_iter / 2, 1.14, 7.62, 0.3)
-
-
 ######################################################
 # Algorithm that solves Economic dispatching problem
 
@@ -81,25 +75,22 @@ def run_algorithm(P_min, P_max, p_load, p_loss, A, B, C, max_iter = 10000):
     for i in range(n_g):
         H[i,i] = 2*A[i]
     g = np.array([[B[i]] for i in range(n_g)], dtype=float)
+    epsilon = 1e-9
 
     for k in range(max_iter):
+        # transform the minimization problem from over p to over dk
+        # where dk = p_new - p_cur
+        # to do this we need to calculate a helper value gk
+        gk = H.dot(P) + g
         # find matrix corresponding to working set W(k)
         # the dimensions will be (n_g + 1) x n_g at most
         (Ak, b) = constraint_matrix(W, P_min, P_max, p_load, p_loss)
+
         # solve equality constrained quadratic programming subproblem to find descent direction
-        dk = QP_sub(Ak, H, g)
+        (dk, lam) = QP_sub(Ak, H, gk)
 
         # if dk is near zero (all components within epsilon-zone around zero)
         if all(math.isclose(dk_e, 0) for dk_e in dk):
-            # find the lagrange multipliers for the active constraints, closed form solution
-            Hi = np.linalg.inv(H)
-            # Ak * Hi * Ak^T
-            M_left = Ak.dot(Hi.dot(np.transpose(Ak)))
-            # Ak * Hi * g
-            M_right = Ak.dot(Hi.dot(g))
-            # -(Ak * Hi * Ak^T)^-1 * (Ak * Hi * g + b)
-            lam = (-np.linalg.inv(M_left)).dot(M_right + b)
-
             # minimum lambda over the active inequality constraints and corresponding index
             n_act = len(W) + 1
             lam_min, q = min([(lam[i,0], i-1) for i in range(1, n_act)])
@@ -120,24 +111,23 @@ def run_algorithm(P_min, P_max, p_load, p_loss, A, B, C, max_iter = 10000):
         else:
             # calculate maximum stepsize t such that moving along t*dk is feasible
             # also calculate blocking constraint (with index p)
-            (t, p, is_up) = step_scaler(P, dk, P_min, P_max)
-            print(t, p, is_up)
-            input()
-            
-            # if we can step the whole direction vector, we are done so saturate it from above
-            alpha = min(t, 1)
-            P = P + alpha * dk
+            (t, p, is_up) = step_scaler(W, P, dk, P_min, P_max)
+            P = P + t * dk
 
-            # if t < 1, we have colided with a blocking constraint
+            # if t < 1, we have colided with a blocking constraint (or p != -1)
             # in that case add constraint to working set
             # if there are multiple they will all eventually be added
-            W.append((p, P[p, 0], is_up))
+            if p != -1:
+                if is_up:
+                    W.append((p, P_max[p], True))
+                else:
+                    W.append((p, P_min[p], False))
 
     # if we've reached here then the max number of iterations has been exceded
     # return the current feasible point (best we can do) and max number of iterations + 1
     # -1 for all other parameters
 
-    P_final = [P[i][0] for i in range(n_g)]
+    P_final = [P[i, 0] for i in range(n_g)]
     return (P_final, max_iter + 1, -1, -1, -1)
 
 
@@ -193,17 +183,18 @@ def constraint_matrix(W, P_min, P_max, p_load, p_loss):
     # first row is always the one equality constraint
     # all ones becuase we are taking the sum of the pi's
     for i in range(n_g):
-        A[0][i] = 1
-    b[0] = p_load + p_loss
+        A[0, i] = 1
+    b[0, 0] = p_load + p_loss
 
     # depending if the constraint is <= or >= we change the sign
+    # reduce everything to <= constraints
     for i, (k, v, is_up) in enumerate(W):
         if is_up:
-            A[i + 1][k] = 1
-            b[i + 1][0] = v
+            A[i + 1, k] = 1
+            b[i + 1, 0] = v
         else:
-            A[i + 1][k] = -1
-            b[i + 1][0] = -v
+            A[i + 1, k] = -1
+            b[i + 1, 0] = -v
     
     return (A, b)
 
@@ -225,8 +216,9 @@ def QP_sub(Ak, H, g):
 
     # now solve system A * [x lambda]^T = [g 0]^T
     x = np.linalg.solve(A, rhs)
-    d = x[:n_g]
-    return d
+    d = x[: n_g]
+    lam = x[n_g :]
+    return (d, lam)
 
 
 # helper function for calculating matrix for closed form constrained LS
@@ -258,25 +250,33 @@ def closed_form_matrix(Ak, H, n_act, n_g):
 # The second conditions are imposed because if they aren't,
 # the inequalities would be trivially satisfied for t > 0
 
-def step_scaler(P, dk, P_min, P_max):
+def step_scaler(W, P, dk, P_min, P_max):
     # t is at most 1
     t = 1
     p = -1
     n_g = len(P_min)
+    epsilon = 1e-9
+    is_up = True
+
+    # see which variables are fixed (in active constraints)
+    is_active = [False for _ in range(n_g)]
+    for (q, q_eq, is_q_up) in W:
+        is_active[q] = True
 
     # iterate over all possible inequality constraints
     for i in range(n_g):
-        d = dk[i, 0]
+        if not is_active[i]:
+            d = dk[i, 0]
 
-        # the imposed conditions
-        if d > 0 and (P_max[i] - P[i][0]) / d < t:
-            t =  (P_max[i] - P[i][0]) / d
-            p = i
-            is_up = True
-        
-        if d < 0 and (P_min[i] - P[i][0]) / d < t:
-            t = (P_min[i] - P[i][0]) / d
-            p = i
-            is_up = False
+            # the imposed conditions
+            if d > epsilon and (P_max[i] - P[i][0]) / d < t:
+                t =  (P_max[i] - P[i][0]) / d
+                p = i
+                is_up = True
+            
+            if d < -epsilon and (P_min[i] - P[i][0]) / d < t:
+                t = (P_min[i] - P[i][0]) / d
+                p = i
+                is_up = False
 
     return (t, p, is_up)
