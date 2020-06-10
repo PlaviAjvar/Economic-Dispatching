@@ -61,9 +61,11 @@ if __name__ == "__main__":
         print("Total cost =", total_price)
         print("Total power =", total_power)
         print("Power loss =", total_power_loss)
+        print("P_sum = ", sum(P))
     
     if random_tests:
-        for test in range(10):
+        test_num = 10
+        for test in range(test_num):
             P_min, P_max, p_load, p_loss, A, B, C = input_test(test)
 
             if active_set:
@@ -89,7 +91,12 @@ if __name__ == "__main__":
                 file.write(" ".join(list(map(str,P))) + "\n")
                 file.write("Iterations: " + str(iter_count) + "\n")
                 file.write("Cost: " + str(total_price) + "\n")
+                file.write("Total power: " + str(total_power) + "\n")
+                file.write("P_sum: " + str(sum(P)) + "\n")
+                file.write("abs(P_sum - P_tot): " + str(abs(sum(P)-total_power)) + "\n")
 
+            print("P_sum = ", sum(P))
+            print("P_tot = ", total_power)
             print("Iterations: " + str(iter_count))
             print("Cost: " + str(total_price))    
             print("")                                                         
