@@ -256,7 +256,7 @@ def closed_form_matrix(Ak, H, n_act, n_g):
 # The second conditions are imposed because if they aren't,
 # the inequalities would be trivially satisfied for t > 0
 
-def step_scaler(W, P, dk, P_min, P_max):
+def step_scaler(W, P, dk, P_min, P_max, fix_loops=False):
     # t is at most 1
     t = 1
     p = -1
@@ -275,14 +275,25 @@ def step_scaler(W, P, dk, P_min, P_max):
             d = dk[i, 0]
 
             # the imposed conditions
+            # also if fix loops is active implement loop fixing procedure
             if d > epsilon:
-                if (P_max[i] - P[i,0]) / d < t or (isclose(t, (P_max[i] - P[i,0]) / d) and random.randint(0,1) == 0):
+                if (P_max[i] - P[i,0]) / d < t:
                     t = (P_max[i] - P[i,0]) / d
                     p = i
                     is_up = True
-
+            
+                if fix_loops and (isclose(t, (P_max[i] - P[i,0]) / d) and random.randint(0,1) == 0):
+                    t = (P_max[i] - P[i,0]) / d
+                    p = i
+                    is_up = True
+            
             if d < -epsilon:
-                if (P_min[i] - P[i,0]) / d < t or (isclose(t, (P_min[i] - P[i,0]) / d) and random.randint(0,1) == 0):
+                if (P_min[i] - P[i,0]) / d < t:
+                    t = (P_min[i] - P[i,0]) / d
+                    p = i
+                    is_up = False
+                
+                if fix_loops and (isclose(t, (P_min[i] - P[i,0]) / d) and random.randint(0,1) == 0):
                     t = (P_min[i] - P[i,0]) / d
                     p = i
                     is_up = False
