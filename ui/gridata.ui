@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>760</width>
+    <width>642</width>
     <height>438</height>
    </rect>
   </property>
@@ -21,7 +21,7 @@
        <number>20</number>
       </property>
       <property name="columnCount">
-       <number>7</number>
+       <number>6</number>
       </property>
       <row/>
       <row/>
@@ -43,7 +43,6 @@
       <row/>
       <row/>
       <row/>
-      <column/>
       <column/>
       <column/>
       <column/>
@@ -78,7 +77,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>760</width>
+     <width>642</width>
      <height>21</height>
     </rect>
    </property>

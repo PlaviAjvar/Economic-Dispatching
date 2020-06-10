@@ -36,7 +36,6 @@ def load_data():
     A = []
     B = []
     C = []
-    ID = []
     Name = []
     Key = []
     
@@ -49,7 +48,6 @@ def load_data():
     with open("mock_database/generators.txt", "r") as genfile:
         for line in genfile:
             id, key, name, P_minv, P_maxv, av, bv, cv, date, time = tuple(line.split())
-            ID.append(id)
             Name.append(name)
             Key.append(key)
             P_min.append(float(P_minv))
@@ -64,7 +62,7 @@ def load_data():
             p_load += float(p_loadv)
             p_loss += float(p_lossv)
 
-    return (ID, Key, Name, P_min, P_max, p_load, p_loss, A, B, C)
+    return (Key, Name, P_min, P_max, p_load, p_loss, A, B, C)
 
 
 
@@ -196,7 +194,7 @@ def remove_element(key):
         netfile.truncate()
 
         if not found_key:
-            raise Exception("Failed to remove element from database. No matching id.")
+            raise Exception("Failed to remove element from database. No matching ID.")
 
 
 # helper function for obtaining data from database in form of table

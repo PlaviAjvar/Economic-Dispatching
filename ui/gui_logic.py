@@ -21,7 +21,7 @@ def gen_load():
     # load data from database
     data = database.generator_data()
     ui_gdata.tableWidget.setRowCount(0)
-    gdata_col = 10
+    gdata_col = 9
     ui_gdata.tableWidget.setColumnCount(gdata_col)
 
     # add a row
@@ -29,16 +29,15 @@ def gen_load():
     offset = 1
 
     # add row with labels for better readibility of database
-    ui_gdata.tableWidget.setItem(0, 0, QtWidgets.QTableWidgetItem("Database ID"))
-    ui_gdata.tableWidget.setItem(0, 1, QtWidgets.QTableWidgetItem("ID"))
-    ui_gdata.tableWidget.setItem(0, 2, QtWidgets.QTableWidgetItem("Name"))
-    ui_gdata.tableWidget.setItem(0, 3, QtWidgets.QTableWidgetItem("P_low [MW]"))
-    ui_gdata.tableWidget.setItem(0, 4, QtWidgets.QTableWidgetItem("P_high [MW]"))
-    ui_gdata.tableWidget.setItem(0, 5, QtWidgets.QTableWidgetItem("a [$/h]"))
-    ui_gdata.tableWidget.setItem(0, 6, QtWidgets.QTableWidgetItem("b [$/h]"))
-    ui_gdata.tableWidget.setItem(0, 7, QtWidgets.QTableWidgetItem("c [$/h]"))
-    ui_gdata.tableWidget.setItem(0, 8, QtWidgets.QTableWidgetItem("Date"))
-    ui_gdata.tableWidget.setItem(0, 9, QtWidgets.QTableWidgetItem("Time"))
+    ui_gdata.tableWidget.setItem(0, 0, QtWidgets.QTableWidgetItem("ID"))
+    ui_gdata.tableWidget.setItem(0, 1, QtWidgets.QTableWidgetItem("Name"))
+    ui_gdata.tableWidget.setItem(0, 2, QtWidgets.QTableWidgetItem("P_low [MW]"))
+    ui_gdata.tableWidget.setItem(0, 3, QtWidgets.QTableWidgetItem("P_high [MW]"))
+    ui_gdata.tableWidget.setItem(0, 4, QtWidgets.QTableWidgetItem("a [$/h]"))
+    ui_gdata.tableWidget.setItem(0, 5, QtWidgets.QTableWidgetItem("b [$/h]"))
+    ui_gdata.tableWidget.setItem(0, 6, QtWidgets.QTableWidgetItem("c [$/h]"))
+    ui_gdata.tableWidget.setItem(0, 7, QtWidgets.QTableWidgetItem("Date"))
+    ui_gdata.tableWidget.setItem(0, 8, QtWidgets.QTableWidgetItem("Time"))
 
     for table_row_number, row in enumerate(data):
         # because we add some rows before
@@ -53,7 +52,7 @@ def net_load():
     # load data from database
     data = database.network_data()
     ui_ndata.tableWidget.setRowCount(0)
-    ndata_col = 7
+    ndata_col = 6
     ui_ndata.tableWidget.setColumnCount(ndata_col)
 
     # add a row
@@ -61,13 +60,12 @@ def net_load():
     offset = 1
 
     # add row with labels for readibility
-    ui_ndata.tableWidget.setItem(0, 0, QtWidgets.QTableWidgetItem("Database ID"))
-    ui_ndata.tableWidget.setItem(0, 1, QtWidgets.QTableWidgetItem("ID"))
-    ui_ndata.tableWidget.setItem(0, 2, QtWidgets.QTableWidgetItem("Name"))
-    ui_ndata.tableWidget.setItem(0, 3, QtWidgets.QTableWidgetItem("P_load [MW]"))
-    ui_ndata.tableWidget.setItem(0, 4, QtWidgets.QTableWidgetItem("P_loss [MW]"))
-    ui_ndata.tableWidget.setItem(0, 5, QtWidgets.QTableWidgetItem("Date"))
-    ui_ndata.tableWidget.setItem(0, 6, QtWidgets.QTableWidgetItem("Time"))
+    ui_ndata.tableWidget.setItem(0, 0, QtWidgets.QTableWidgetItem("ID"))
+    ui_ndata.tableWidget.setItem(0, 1, QtWidgets.QTableWidgetItem("Name"))
+    ui_ndata.tableWidget.setItem(0, 2, QtWidgets.QTableWidgetItem("P_load [MW]"))
+    ui_ndata.tableWidget.setItem(0, 3, QtWidgets.QTableWidgetItem("P_loss [MW]"))
+    ui_ndata.tableWidget.setItem(0, 4, QtWidgets.QTableWidgetItem("Date"))
+    ui_ndata.tableWidget.setItem(0, 5, QtWidgets.QTableWidgetItem("Time"))
 
     for table_row_number, row in enumerate(data):
         row_number = table_row_number + offset
@@ -82,7 +80,7 @@ def sol_load():
     data = database.solution_data()
     ui_sol.tableWidget.setRowCount(0)
     # label, name, P_low, P_high, P, cost
-    sol_col = 10
+    sol_col = 9
     ui_sol.tableWidget.setColumnCount(sol_col)
 
     # calculate total power and total cost
@@ -94,16 +92,15 @@ def sol_load():
     offset = 1
 
     # add row with labels for readibility
-    ui_sol.tableWidget.setItem(0, 0, QtWidgets.QTableWidgetItem("Database ID"))
-    ui_sol.tableWidget.setItem(0, 1, QtWidgets.QTableWidgetItem("Order ID"))
-    ui_sol.tableWidget.setItem(0, 2, QtWidgets.QTableWidgetItem("Date"))
-    ui_sol.tableWidget.setItem(0, 3, QtWidgets.QTableWidgetItem("Time"))
-    ui_sol.tableWidget.setItem(0, 4, QtWidgets.QTableWidgetItem("Generator ID"))
-    ui_sol.tableWidget.setItem(0, 5, QtWidgets.QTableWidgetItem("Generator Name"))
-    ui_sol.tableWidget.setItem(0, 6, QtWidgets.QTableWidgetItem("Power [MW]"))
-    ui_sol.tableWidget.setItem(0, 7, QtWidgets.QTableWidgetItem("P_low [MW]"))
-    ui_sol.tableWidget.setItem(0, 8, QtWidgets.QTableWidgetItem("P_high [MW]"))
-    ui_sol.tableWidget.setItem(0, 9, QtWidgets.QTableWidgetItem("Cost [$]"))
+    ui_sol.tableWidget.setItem(0, 0, QtWidgets.QTableWidgetItem("Order ID"))
+    ui_sol.tableWidget.setItem(0, 1, QtWidgets.QTableWidgetItem("Date"))
+    ui_sol.tableWidget.setItem(0, 2, QtWidgets.QTableWidgetItem("Time"))
+    ui_sol.tableWidget.setItem(0, 3, QtWidgets.QTableWidgetItem("Generator ID"))
+    ui_sol.tableWidget.setItem(0, 4, QtWidgets.QTableWidgetItem("Generator Name"))
+    ui_sol.tableWidget.setItem(0, 5, QtWidgets.QTableWidgetItem("Power [MW]"))
+    ui_sol.tableWidget.setItem(0, 6, QtWidgets.QTableWidgetItem("P_low [MW]"))
+    ui_sol.tableWidget.setItem(0, 7, QtWidgets.QTableWidgetItem("P_high [MW]"))
+    ui_sol.tableWidget.setItem(0, 8, QtWidgets.QTableWidgetItem("Cost [$]"))
 
 
     for table_row_number, row in enumerate(data):
@@ -145,6 +142,7 @@ def open_main():
     ui = dispatching.Ui_MainWindow()
     ui.setupUi(MainWindow)
     main_ui_bindings()
+    database.setup()
     MainWindow.show()
 
 # display solution data
@@ -198,8 +196,8 @@ def open_optimize():
     ui.orderLineEdit.clear()
     
     # run algorithm
-    (ID, Key, Name, P_min, P_max, p_load, p_loss, A, B, C) = database.load_data()
     try:
+        (Key, Name, P_min, P_max, p_load, p_loss, A, B, C) = database.load_data()
         (P, iter_count, total_price, total_power, total_power_loss) = algorithm.run_algorithm(P_min, 
         P_max, p_load, p_loss, A, B, C, max_iter)
 
