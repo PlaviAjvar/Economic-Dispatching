@@ -6,11 +6,11 @@ If Python 3 or pip aren't already installed, first go to [here](https://www.pyth
 
 Now, navigate to cloned folder and install requirements via pip: 
 
->> pip install -r requirements.txt
+> pip install -r requirements.txt
 
 To start the GUI, navigate to cloned Economic-Dispatching and run gui.py:
 
->> python gui.py
+> python gui.py
 
 ## How to test algorithm
 
@@ -18,7 +18,7 @@ There are 2 scripts related to testing. The first is tests/generate_tests.py. Ru
 
 The 2nd file is test_algorithm.py. You can run it with various flags, which determine the running mode. For example:
 
->> python test_algorithm.py -p -a
+> python test_algorithm.py -p -a
 
 runs the active set algorithm on a preset test case. The various flags you can use are:
 
