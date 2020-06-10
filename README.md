@@ -1,6 +1,6 @@
-## Economic-Dispatching
+# Economic-Dispatching
 
-# How to Use
+## How to Use
 
 If Python 3 or pip aren't already installed, first go to [here](https://www.python.org/downloads/) and [here](https://pip.pypa.io/en/stable/installing/).
 
@@ -12,7 +12,7 @@ To start the GUI, navigate to cloned Economic-Dispatching and run gui.py:
 
 >> python gui.py
 
-# How to test algorithm
+## How to test algorithm
 
 There are 2 scripts related to testing. The first is tests/generate_tests.py. Running it generates 10 random tests in the input folder. Running it will overwrite the old tests.
 
