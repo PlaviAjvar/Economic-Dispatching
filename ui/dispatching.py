@@ -8,7 +8,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+from ui import dispatching_img_rc
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -119,4 +119,3 @@ class Ui_MainWindow(object):
         self.max_iter_label.setText(_translate("MainWindow", "Maximum number of iterations:"))
         self.optimize_btn.setText(_translate("MainWindow", "Optimize"))
         self.resultHistory.setText(_translate("MainWindow", "Display Results"))
-import dispatching_img_rc

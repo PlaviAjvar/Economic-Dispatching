@@ -1,15 +1,12 @@
 # dirty imports messing with path
+import pathlib, sys
+sys.path.insert(0, pathlib.Path().absolute())
+print(pathlib.Path().absolute())
 
-"""
-import os
-import sys
-top_level = os.path.abspath("..")
-sys.path.append(top_level)
-"""
-
-import algorithm, database
+from algorithm import algorithm
+from database import database
 # sys.path.append("/ui")
-import dispatching, gendata, generators, grid, gridata, optimize, solution
+from ui import dispatching, gendata, generators, grid, gridata, optimize, solution
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 # default number of maximum iterations

@@ -8,7 +8,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+from ui import generators_img_rc
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -139,4 +139,3 @@ class Ui_MainWindow(object):
         self.idLabel.setText(_translate("MainWindow", "ID: "))
         self.remgen_btn.setText(_translate("MainWindow", "Remove Generator"))
         self.disp_dat_btn.setText(_translate("MainWindow", "Display Database"))
-import generators_img_rc

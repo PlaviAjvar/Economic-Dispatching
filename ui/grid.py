@@ -8,7 +8,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+from ui import grid_img_rc
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -117,4 +117,3 @@ class Ui_MainWindow(object):
         self.iDLabel.setText(_translate("MainWindow", "ID: "))
         self.rem_ele_btn.setText(_translate("MainWindow", "Remove Element"))
         self.disp_data_btn.setText(_translate("MainWindow", "Display Database"))
-import grid_img_rc

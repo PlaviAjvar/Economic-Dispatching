@@ -1,6 +1,6 @@
 import numpy as np
 import scipy as sp
-import algorithm
+from algorithm import algorithm
 from scipy import optimize
 
 # used in optimization

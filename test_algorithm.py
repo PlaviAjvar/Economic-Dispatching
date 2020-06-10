@@ -1,6 +1,10 @@
-import algorithm
+# dirty imports messing with path
+import pathlib, sys
+sys.path.insert(0, pathlib.Path().absolute())
+print(pathlib.Path().absolute())
+
+from algorithm import algorithm, least_squares
 import sys
-import least_squares
 
 # input info for test
 def input_test(test):

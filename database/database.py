@@ -1,5 +1,4 @@
 # database for stand in implementations using files
-import mock_database
 import sqlite3
 from datetime import datetime
 
@@ -7,7 +6,7 @@ from datetime import datetime
 # executed on program start
 def setup():
     # connect to db file
-    conn = sqlite3.connect("dispatching.db")
+    conn = sqlite3.connect("database/dispatching.db")
     cur = conn.cursor()
     
     # try to create generator table
@@ -72,7 +71,7 @@ def export_solution(Order, Key, Name, P, P_low, P_high, cost):
     date, time = dt_string.split()
 
     # create db cursor
-    conn = sqlite3.connect("dispatching.db")
+    conn = sqlite3.connect("database/dispatching.db")
     cur = conn.cursor()
 
     # add results into db
@@ -87,7 +86,7 @@ def export_solution(Order, Key, Name, P, P_low, P_high, cost):
 # load data in form apropriate for use in algorithm
 def load_data():
     # create db cursor
-    conn = sqlite3.connect("dispatching.db")
+    conn = sqlite3.connect("database/dispatching.db")
     cur = conn.cursor()
 
     # get all generator data
@@ -126,7 +125,7 @@ def add_generator(key, name, p_min, p_max, a, b, c):
         raise Exception("Failed to add generator to database. Name of generator empty.")
 
     # create db cursor
-    conn = sqlite3.connect("dispatching.db")
+    conn = sqlite3.connect("database/dispatching.db")
     cur = conn.cursor()
 
     # check if generator with the same ID has already been added
@@ -155,7 +154,7 @@ def remove_generator(key):
         raise Exception("Failed to remove generator from database. ID is empty.")
     
     # create db cursor
-    conn = sqlite3.connect("dispatching.db")
+    conn = sqlite3.connect("database/dispatching.db")
     cur = conn.cursor()
 
     # if key isn't in database raise exception
@@ -181,7 +180,7 @@ def add_element(key, name, p_load, p_loss):
         raise Exception("Failed to add element to database. Name of element empty.")
 
     # create db cursor
-    conn = sqlite3.connect("dispatching.db")
+    conn = sqlite3.connect("database/dispatching.db")
     cur = conn.cursor()
 
     # check if generator with the same ID has already been added
@@ -210,7 +209,7 @@ def remove_element(key):
         raise Exception("Failed to remove element from database. Key is empty.")
 
     # create db cursor
-    conn = sqlite3.connect("dispatching.db")
+    conn = sqlite3.connect("database/dispatching.db")
     cur = conn.cursor()
 
     # if key isn't in database raise exception
@@ -230,7 +229,7 @@ def remove_element(key):
 # helper function to get data from database
 def get_data(table):
     # create db cursor
-    conn = sqlite3.connect("dispatching.db")
+    conn = sqlite3.connect("database/dispatching.db")
     cur = conn.cursor()
 
     # pull everything from table

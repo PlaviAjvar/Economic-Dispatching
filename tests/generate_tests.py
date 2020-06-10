@@ -1,3 +1,8 @@
+# dirty imports messing with path
+import pathlib, sys
+sys.path.insert(0, pathlib.Path().absolute())
+print(pathlib.Path().absolute())
+
 import random
 
 if __name__ == "__main__":
