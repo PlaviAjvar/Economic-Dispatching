@@ -3,8 +3,8 @@ import mock_database
 
 
 # exports solution to output database
-def export_solution(ID, Key, Name, P, P_low, P_high, cost):
-    mock_database.export_solution(ID, Key, Name, P, P_low, P_high, cost)
+def export_solution(Order, Key, Name, P, P_low, P_high, cost):
+    mock_database.export_solution(Order, Key, Name, P, P_low, P_high, cost)
 
 # load data in form apropriate for use in algorithm
 def load_data():

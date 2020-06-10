@@ -1,14 +1,31 @@
 from datetime import datetime
 
 # exports solution to output database
-def export_solution(ID, Key, Name, P, P_low, P_high, cost):
+# appends to end of file
+
+def export_solution(Order, Key, Name, P, P_low, P_high, cost):
+    # if order label is empty raise xception
+    if not Order:
+        raise Exception("Failed to proccess order. Order ID is empty.")
+
+    # count number of lines in file
+    with open("mock_database/results.txt","r") as peek:
+        line_count = 0
+        for line in peek:
+            line_count += 1
+
     # overwrite old solution
-    with open("mock_database/results.txt", "w") as outfile:
-        num_generators = len(ID)
+    with open("mock_database/results.txt", "a") as outfile:
+        # get current date and time
+        now = datetime.now()
+        dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+
+        num_generators = len(Key)
         # output everything to output folder
         for gi in range(num_generators):
-            outfile.write(str(ID[gi]) + " " + str(Key[gi]) + " " + str(Name[gi]) + " " + str(P[gi]) + " " +
-            str(P_low[gi]) + " " + str(P_high[gi]) + " " + str(cost[gi]) + "\n")
+            outfile.write(str(gi + line_count) + " " + Order + " " + dt_string + " " + str(Key[gi]) + " " + str(Name[gi]) + " " + 
+            str(P[gi]) + " " + str(P_low[gi]) + " " + str(P_high[gi]) + " " + str(cost[gi]) + "\n")
+
 
 
 # load data in form apropriate for use in algorithm

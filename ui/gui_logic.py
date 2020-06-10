@@ -82,7 +82,7 @@ def sol_load():
     data = database.solution_data()
     ui_sol.tableWidget.setRowCount(0)
     # label, name, P_low, P_high, P, cost
-    sol_col = 7
+    sol_col = 10
     ui_sol.tableWidget.setColumnCount(sol_col)
 
     # calculate total power and total cost
@@ -95,12 +95,15 @@ def sol_load():
 
     # add row with labels for readibility
     ui_sol.tableWidget.setItem(0, 0, QtWidgets.QTableWidgetItem("Database ID"))
-    ui_sol.tableWidget.setItem(0, 1, QtWidgets.QTableWidgetItem("ID"))
-    ui_sol.tableWidget.setItem(0, 2, QtWidgets.QTableWidgetItem("Name"))
-    ui_sol.tableWidget.setItem(0, 3, QtWidgets.QTableWidgetItem("Power [MW]"))
-    ui_sol.tableWidget.setItem(0, 4, QtWidgets.QTableWidgetItem("P_low [MW]"))
-    ui_sol.tableWidget.setItem(0, 5, QtWidgets.QTableWidgetItem("P_high [MW]"))
-    ui_sol.tableWidget.setItem(0, 6, QtWidgets.QTableWidgetItem("Cost [$]"))
+    ui_sol.tableWidget.setItem(0, 1, QtWidgets.QTableWidgetItem("Order ID"))
+    ui_sol.tableWidget.setItem(0, 2, QtWidgets.QTableWidgetItem("Date"))
+    ui_sol.tableWidget.setItem(0, 3, QtWidgets.QTableWidgetItem("Time"))
+    ui_sol.tableWidget.setItem(0, 4, QtWidgets.QTableWidgetItem("Generator ID"))
+    ui_sol.tableWidget.setItem(0, 5, QtWidgets.QTableWidgetItem("Generator Name"))
+    ui_sol.tableWidget.setItem(0, 6, QtWidgets.QTableWidgetItem("Power [MW]"))
+    ui_sol.tableWidget.setItem(0, 7, QtWidgets.QTableWidgetItem("P_low [MW]"))
+    ui_sol.tableWidget.setItem(0, 8, QtWidgets.QTableWidgetItem("P_high [MW]"))
+    ui_sol.tableWidget.setItem(0, 9, QtWidgets.QTableWidgetItem("Cost [$]"))
 
 
     for table_row_number, row in enumerate(data):
@@ -190,6 +193,9 @@ def open_optimize():
         max_iter = int(text_box)
     # clear the textbox
     ui.max_iter_txt.clear()
+
+    order = ui.orderLineEdit.displayText()
+    ui.orderLineEdit.clear()
     
     # run algorithm
     (ID, Key, Name, P_min, P_max, p_load, p_loss, A, B, C) = database.load_data()
@@ -198,7 +204,7 @@ def open_optimize():
         P_max, p_load, p_loss, A, B, C, max_iter)
 
         # export solution to database
-        database.export_solution(ID, Key, Name, P, P_min, P_max, algorithm.cost_vector(P, A, B, C))
+        database.export_solution(order, Key, Name, P, P_min, P_max, algorithm.cost_vector(P, A, B, C))
 
         # change textbook to display information about the solution
         _translate = QtCore.QCoreApplication.translate

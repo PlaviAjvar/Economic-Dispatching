@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>618</width>
+    <width>592</width>
     <height>360</height>
    </rect>
   </property>
@@ -37,7 +37,7 @@
       </property>
       <property name="minimumSize">
        <size>
-        <width>300</width>
+        <width>280</width>
         <height>300</height>
        </size>
       </property>
@@ -90,40 +90,28 @@
        </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+       <layout class="QHBoxLayout" name="horizontalLayout_2"/>
+      </item>
+      <item>
+       <layout class="QFormLayout" name="formLayout">
+        <item row="0" column="0">
+         <widget class="QLabel" name="orderLabel">
+          <property name="text">
+           <string>Order:</string>
           </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
+         </widget>
         </item>
-        <item>
-         <widget class="QLabel" name="max_iter_label">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="MinimumExpanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="orderLineEdit">
           <property name="minimumSize">
            <size>
             <width>0</width>
             <height>25</height>
            </size>
           </property>
-          <property name="text">
-           <string>Maximum number of iterations:</string>
-          </property>
          </widget>
         </item>
-        <item>
+        <item row="1" column="1">
          <widget class="QTextEdit" name="max_iter_txt">
           <property name="sizePolicy">
            <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
@@ -139,9 +127,28 @@
           </property>
           <property name="maximumSize">
            <size>
-            <width>200</width>
+            <width>1000000</width>
             <height>25</height>
            </size>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="max_iter_label">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="MinimumExpanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Maximum number of iterations:</string>
           </property>
          </widget>
         </item>
