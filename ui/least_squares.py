@@ -36,7 +36,7 @@ def run_algorithm(P_min, P_max, p_load, p_loss, A, B, C):
     P = [e for e in optres.x]
     iter_count = optres.status
     total_price = optres.fun
-    total_power = p_load
+    total_power = p_load + p_loss
     total_power_loss = p_loss
     
     return (P, iter_count, total_price, total_power, total_power_loss)
