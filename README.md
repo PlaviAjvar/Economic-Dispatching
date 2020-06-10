@@ -8,7 +8,7 @@ Now, navigate to cloned folder and install requirements via pip:
 
 > pip install -r requirements.txt
 
-To start the GUI, navigate to cloned Economic-Dispatching and run gui.py:
+To start the GUI, navigate to Economic-Dispatching and run gui.py:
 
 > python gui.py
 
