@@ -146,7 +146,7 @@ def sol_load():
         ui_sol.tableWidget.setItem(0, 5, QtWidgets.QTableWidgetItem("Power [MW]"))
         ui_sol.tableWidget.setItem(0, 6, QtWidgets.QTableWidgetItem("P_low [MW]"))
         ui_sol.tableWidget.setItem(0, 7, QtWidgets.QTableWidgetItem("P_high [MW]"))
-        ui_sol.tableWidget.setItem(0, 8, QtWidgets.QTableWidgetItem("Cost [$]"))
+        ui_sol.tableWidget.setItem(0, 8, QtWidgets.QTableWidgetItem("Cost [$/h]"))
 
 
         for table_row_number, row in enumerate(data):
