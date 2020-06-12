@@ -380,5 +380,10 @@ def fix_date(date):
     if not date:
         return ""
 
-    y, m, d = date.split("/")
+    date_split = date.split("/")
+    # improper number values to unpack
+    if len(date_split) != 3:
+        raise Exception("Invalid date format.")
+
+    y, m, d = date_split
     return "/".join([d, m, y])

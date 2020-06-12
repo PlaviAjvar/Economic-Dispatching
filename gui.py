@@ -16,13 +16,13 @@ default_iter = 10000
 def gen_load():
     global ui_gdata, gdata_col
 
-    # load info from line edits
-    gen_id = ui_gdata.generatorIDLineEdit.displayText()
-    gen_name = ui_gdata.generatorNameLineEdit.displayText()
-    date_after = database.fix_date(ui_gdata.dateAfterLineEdit.displayText())
-    date_before = database.fix_date(ui_gdata.dateBeforeLineEdit.displayText())
-
     try:
+        # load info from line edits
+        gen_id = ui_gdata.generatorIDLineEdit.displayText()
+        gen_name = ui_gdata.generatorNameLineEdit.displayText()
+        date_after = database.fix_date(ui_gdata.dateAfterLineEdit.displayText())
+        date_before = database.fix_date(ui_gdata.dateBeforeLineEdit.displayText())
+
         # load data from database
         data = database.generator_data(gen_id, gen_name, date_after, date_before)
         ui_gdata.tableWidget.setRowCount(0)
@@ -66,13 +66,13 @@ def gen_load():
 def net_load():
     global ui_ndata, ndata_col
 
-    # load info from line edits
-    elem_id = ui_ndata.elementIDLineEdit.displayText()
-    elem_name = ui_ndata.elementNameLineEdit.displayText()
-    date_after = database.fix_date(ui_ndata.dateAfterLineEdit.displayText())
-    date_before = database.fix_date(ui_ndata.dateBeforeLineEdit.displayText())
-
     try:
+        # load info from line edits
+        elem_id = ui_ndata.elementIDLineEdit.displayText()
+        elem_name = ui_ndata.elementNameLineEdit.displayText()
+        date_after = database.fix_date(ui_ndata.dateAfterLineEdit.displayText())
+        date_before = database.fix_date(ui_ndata.dateBeforeLineEdit.displayText())
+
         # load data from database
         data = database.network_data(elem_id, elem_name, date_after, date_before)
         ui_ndata.tableWidget.setRowCount(0)
@@ -111,20 +111,20 @@ def net_load():
 # helper function for loading solution database into table widget
 def sol_load():
     global ui_sol, sol_col
-    
-    # load text from linedits
-    order_id = ui_sol.orderIDLineEdit.displayText()
-    generator_id = ui_sol.generatorIDLineEdit.displayText()
-    generator_name = ui_sol.generatorNameLineEdit.displayText()
-    date_after = database.fix_date(ui_sol.dateAfterLineEdit.displayText())
-    date_before = database.fix_date(ui_sol.dateBeforeLineEdit.displayText())
-
-    power_low = ui_sol.powerLowLineEdit.displayText()
-    power_high = ui_sol.powerHighLineEdit.displayText()
-    cost_low = ui_sol.costLowLineEdit.displayText()
-    cost_high = ui_sol.costHighLineEdit.displayText()
 
     try:
+        # load text from linedits
+        order_id = ui_sol.orderIDLineEdit.displayText()
+        generator_id = ui_sol.generatorIDLineEdit.displayText()
+        generator_name = ui_sol.generatorNameLineEdit.displayText()
+        date_after = database.fix_date(ui_sol.dateAfterLineEdit.displayText())
+        date_before = database.fix_date(ui_sol.dateBeforeLineEdit.displayText())
+
+        power_low = ui_sol.powerLowLineEdit.displayText()
+        power_high = ui_sol.powerHighLineEdit.displayText()
+        cost_low = ui_sol.costLowLineEdit.displayText()
+        cost_high = ui_sol.costHighLineEdit.displayText()
+        
         # load data from database
         data = database.solution_data(order_id, generator_id, generator_name, date_after, date_before,
                                         power_low, power_high, cost_low, cost_high)
