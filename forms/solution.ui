@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>938</width>
-    <height>509</height>
+    <height>658</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -55,30 +55,122 @@
      </widget>
     </item>
     <item>
-     <widget class="QLabel" name="total_cost">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>25</height>
-       </size>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
+     <layout class="QFormLayout" name="formLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="orderIDLabel">
+        <property name="text">
+         <string>Order ID:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="orderIDLineEdit"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="generatorIDLabel">
+        <property name="text">
+         <string>Generator ID:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="generatorIDLineEdit"/>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="generatorNameLabel">
+        <property name="text">
+         <string>Generator Name:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLineEdit" name="generatorNameLineEdit"/>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="dateAfterLabel">
+        <property name="text">
+         <string>Date After:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QLineEdit" name="dateAfterLineEdit"/>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="dateBeforeLabel">
+        <property name="text">
+         <string>Date Before:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QLineEdit" name="dateBeforeLineEdit"/>
+      </item>
+     </layout>
     </item>
     <item>
-     <widget class="QLabel" name="supplied_power">
-      <property name="minimumSize">
-       <size>
-        <width>0</width>
-        <height>25</height>
-       </size>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetDefaultConstraint</enum>
       </property>
-      <property name="text">
-       <string/>
+      <property name="topMargin">
+       <number>5</number>
       </property>
-     </widget>
+      <item>
+       <widget class="QLineEdit" name="powerLowLineEdit"/>
+      </item>
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>   &lt;=   Power (generator)   &lt;=    </string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="powerHighLineEdit">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>25</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <property name="topMargin">
+       <number>5</number>
+      </property>
+      <item>
+       <widget class="QLineEdit" name="costLowLineEdit">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>   &lt;=    Cost (generator)    &lt;=      </string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="costHighLineEdit">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>25</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
     <item>
      <widget class="QPushButton" name="refresh_btn">
@@ -95,7 +187,7 @@
        </size>
       </property>
       <property name="text">
-       <string>Refresh Solution</string>
+       <string>Refresh List</string>
       </property>
      </widget>
     </item>

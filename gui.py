@@ -15,103 +15,155 @@ default_iter = 10000
 # helper function for loading generator database into table widget
 def gen_load():
     global ui_gdata, gdata_col
-    # load data from database
-    data = database.generator_data()
-    ui_gdata.tableWidget.setRowCount(0)
-    gdata_col = 9
-    ui_gdata.tableWidget.setColumnCount(gdata_col)
 
-    # add a row
-    ui_gdata.tableWidget.insertRow(0)
-    offset = 1
+    # load info from line edits
+    gen_id = ui_gdata.generatorIDLineEdit.displayText()
+    gen_name = ui_gdata.generatorNameLineEdit.displayText()
+    date_after = ui_gdata.dateAfterLineEdit.displayText()
+    date_before = ui_gdata.dateBeforeLineEdit.displayText()
 
-    # add row with labels for better readibility of database
-    ui_gdata.tableWidget.setItem(0, 0, QtWidgets.QTableWidgetItem("ID"))
-    ui_gdata.tableWidget.setItem(0, 1, QtWidgets.QTableWidgetItem("Name"))
-    ui_gdata.tableWidget.setItem(0, 2, QtWidgets.QTableWidgetItem("P_low [MW]"))
-    ui_gdata.tableWidget.setItem(0, 3, QtWidgets.QTableWidgetItem("P_high [MW]"))
-    ui_gdata.tableWidget.setItem(0, 4, QtWidgets.QTableWidgetItem("a [$/h]"))
-    ui_gdata.tableWidget.setItem(0, 5, QtWidgets.QTableWidgetItem("b [$/h]"))
-    ui_gdata.tableWidget.setItem(0, 6, QtWidgets.QTableWidgetItem("c [$/h]"))
-    ui_gdata.tableWidget.setItem(0, 7, QtWidgets.QTableWidgetItem("Date"))
-    ui_gdata.tableWidget.setItem(0, 8, QtWidgets.QTableWidgetItem("Time"))
+    try:
+        # load data from database
+        data = database.generator_data(gen_id, gen_name, date_after, date_before)
+        ui_gdata.tableWidget.setRowCount(0)
+        gdata_col = 9
+        ui_gdata.tableWidget.setColumnCount(gdata_col)
 
-    for table_row_number, row in enumerate(data):
-        # because we add some rows before
-        row_number = table_row_number + offset
-        ui_gdata.tableWidget.insertRow(row_number)
-        for col_number, entry in enumerate(row):       
-            ui_gdata.tableWidget.setItem(row_number, col_number, QtWidgets.QTableWidgetItem(str(entry)))
+        # add a row
+        ui_gdata.tableWidget.insertRow(0)
+        offset = 1
+
+        # add row with labels for better readibility of database
+        ui_gdata.tableWidget.setItem(0, 0, QtWidgets.QTableWidgetItem("ID"))
+        ui_gdata.tableWidget.setItem(0, 1, QtWidgets.QTableWidgetItem("Name"))
+        ui_gdata.tableWidget.setItem(0, 2, QtWidgets.QTableWidgetItem("P_low [MW]"))
+        ui_gdata.tableWidget.setItem(0, 3, QtWidgets.QTableWidgetItem("P_high [MW]"))
+        ui_gdata.tableWidget.setItem(0, 4, QtWidgets.QTableWidgetItem("a [$/h]"))
+        ui_gdata.tableWidget.setItem(0, 5, QtWidgets.QTableWidgetItem("b [$/h]"))
+        ui_gdata.tableWidget.setItem(0, 6, QtWidgets.QTableWidgetItem("c [$/h]"))
+        ui_gdata.tableWidget.setItem(0, 7, QtWidgets.QTableWidgetItem("Date"))
+        ui_gdata.tableWidget.setItem(0, 8, QtWidgets.QTableWidgetItem("Time"))
+
+        for table_row_number, row in enumerate(data):
+            # because we add some rows before
+            row_number = table_row_number + offset
+            ui_gdata.tableWidget.insertRow(row_number)
+            for col_number, entry in enumerate(row):
+                # fix date formatting
+                if col_number == gdata_col - 2:    
+                    fixed_entry = database.fix_date(entry)
+                else:
+                    fixed_entry = str(entry)
+
+                ui_gdata.tableWidget.setItem(row_number, col_number, QtWidgets.QTableWidgetItem(fixed_entry))
+    
+    # data fetch failed
+    except Exception as e:
+        show_fail(str(e))
+
 
 # helper function for loading network database into table widget
 def net_load():
     global ui_ndata, ndata_col
-    # load data from database
-    data = database.network_data()
-    ui_ndata.tableWidget.setRowCount(0)
-    ndata_col = 6
-    ui_ndata.tableWidget.setColumnCount(ndata_col)
 
-    # add a row
-    ui_ndata.tableWidget.insertRow(0)
-    offset = 1
+    # load info from line edits
+    elem_id = ui_ndata.elementIDLineEdit.displayText()
+    elem_name = ui_ndata.elementNameLineEdit.displayText()
+    date_after = ui_ndata.dateAfterLineEdit.displayText()
+    date_before = ui_ndata.dateBeforeLineEdit.displayText()
 
-    # add row with labels for readibility
-    ui_ndata.tableWidget.setItem(0, 0, QtWidgets.QTableWidgetItem("ID"))
-    ui_ndata.tableWidget.setItem(0, 1, QtWidgets.QTableWidgetItem("Name"))
-    ui_ndata.tableWidget.setItem(0, 2, QtWidgets.QTableWidgetItem("P_load [MW]"))
-    ui_ndata.tableWidget.setItem(0, 3, QtWidgets.QTableWidgetItem("P_loss [MW]"))
-    ui_ndata.tableWidget.setItem(0, 4, QtWidgets.QTableWidgetItem("Date"))
-    ui_ndata.tableWidget.setItem(0, 5, QtWidgets.QTableWidgetItem("Time"))
+    try:
+        # load data from database
+        data = database.network_data(elem_id, elem_name, date_after, date_before)
+        ui_ndata.tableWidget.setRowCount(0)
+        ndata_col = 6
+        ui_ndata.tableWidget.setColumnCount(ndata_col)
 
-    for table_row_number, row in enumerate(data):
-        row_number = table_row_number + offset
-        ui_ndata.tableWidget.insertRow(row_number)
-        for col_number, entry in enumerate(row):
-            ui_ndata.tableWidget.setItem(row_number, col_number, QtWidgets.QTableWidgetItem(str(entry)))
+        # add a row
+        ui_ndata.tableWidget.insertRow(0)
+        offset = 1
+
+        # add row with labels for readibility
+        ui_ndata.tableWidget.setItem(0, 0, QtWidgets.QTableWidgetItem("ID"))
+        ui_ndata.tableWidget.setItem(0, 1, QtWidgets.QTableWidgetItem("Name"))
+        ui_ndata.tableWidget.setItem(0, 2, QtWidgets.QTableWidgetItem("P_load [MW]"))
+        ui_ndata.tableWidget.setItem(0, 3, QtWidgets.QTableWidgetItem("P_loss [MW]"))
+        ui_ndata.tableWidget.setItem(0, 4, QtWidgets.QTableWidgetItem("Date"))
+        ui_ndata.tableWidget.setItem(0, 5, QtWidgets.QTableWidgetItem("Time"))
+
+        for table_row_number, row in enumerate(data):
+            row_number = table_row_number + offset
+            ui_ndata.tableWidget.insertRow(row_number)
+            for col_number, entry in enumerate(row):
+                # fix date formatting
+                if col_number == ndata_col - 2:
+                    fixed_entry = database.fix_date(entry)
+                else:
+                    fixed_entry = str(entry)
+
+                ui_ndata.tableWidget.setItem(row_number, col_number, QtWidgets.QTableWidgetItem(fixed_entry))
+    
+    # fetch data failed
+    except Exception as e:
+        show_fail(e)
+
 
 # helper function for loading solution database into table widget
 def sol_load():
     global ui_sol, sol_col
-    # load data from database
-    data = database.solution_data()
-    ui_sol.tableWidget.setRowCount(0)
-    # label, name, P_low, P_high, P, cost
-    sol_col = 9
-    ui_sol.tableWidget.setColumnCount(sol_col)
-
-    # calculate total power and total cost
-    P_total = 0
-    cost_total = 0
-
-    # add two rows
-    ui_sol.tableWidget.insertRow(0)
-    offset = 1
-
-    # add row with labels for readibility
-    ui_sol.tableWidget.setItem(0, 0, QtWidgets.QTableWidgetItem("Order ID"))
-    ui_sol.tableWidget.setItem(0, 1, QtWidgets.QTableWidgetItem("Date"))
-    ui_sol.tableWidget.setItem(0, 2, QtWidgets.QTableWidgetItem("Time"))
-    ui_sol.tableWidget.setItem(0, 3, QtWidgets.QTableWidgetItem("Generator ID"))
-    ui_sol.tableWidget.setItem(0, 4, QtWidgets.QTableWidgetItem("Generator Name"))
-    ui_sol.tableWidget.setItem(0, 5, QtWidgets.QTableWidgetItem("Power [MW]"))
-    ui_sol.tableWidget.setItem(0, 6, QtWidgets.QTableWidgetItem("P_low [MW]"))
-    ui_sol.tableWidget.setItem(0, 7, QtWidgets.QTableWidgetItem("P_high [MW]"))
-    ui_sol.tableWidget.setItem(0, 8, QtWidgets.QTableWidgetItem("Cost [$]"))
-
-
-    for table_row_number, row in enumerate(data):
-        row_number = table_row_number + offset
-        ui_sol.tableWidget.insertRow(row_number)
-        for col_number, entry in enumerate(row):
-            ui_sol.tableWidget.setItem(row_number, col_number, QtWidgets.QTableWidgetItem(str(entry)))
-            if col_number == sol_col - 4:
-                P_total += float(entry)
-            elif col_number == sol_col - 1:
-                cost_total += float(entry)
     
-    ui_sol.total_cost = "The total cost of electrical production is " + str(cost_total)
-    ui_sol.supplied_power = "The total supplied power from the generators is " + str(P_total)
+    # load text from linedits
+    order_id = ui_sol.orderIDLineEdit.displayText()
+    generator_id = ui_sol.generatorIDLineEdit.displayText()
+    generator_name = ui_sol.generatorNameLineEdit.displayText()
+    date_after = ui_sol.dateAfterLineEdit.displayText()
+    date_before = ui_sol.dateBeforeLineEdit.displayText()
+
+    power_low = ui_sol.powerLowLineEdit.displayText()
+    power_high = ui_sol.powerHighLineEdit.displayText()
+    cost_low = ui_sol.costLowLineEdit.displayText()
+    cost_high = ui_sol.costHighLineEdit.displayText()
+
+    try:
+        # load data from database
+        data = database.solution_data(order_id, generator_id, generator_name, date_after, date_before,
+                                        power_low, power_high, cost_low, cost_high)
+        ui_sol.tableWidget.setRowCount(0)
+        # label, name, P_low, P_high, P, cost
+        sol_col = 9
+        ui_sol.tableWidget.setColumnCount(sol_col)
+
+        # add two rows
+        ui_sol.tableWidget.insertRow(0)
+        offset = 1
+
+        # add row with labels for readibility
+        ui_sol.tableWidget.setItem(0, 0, QtWidgets.QTableWidgetItem("Order ID"))
+        ui_sol.tableWidget.setItem(0, 1, QtWidgets.QTableWidgetItem("Date"))
+        ui_sol.tableWidget.setItem(0, 2, QtWidgets.QTableWidgetItem("Time"))
+        ui_sol.tableWidget.setItem(0, 3, QtWidgets.QTableWidgetItem("Generator ID"))
+        ui_sol.tableWidget.setItem(0, 4, QtWidgets.QTableWidgetItem("Generator Name"))
+        ui_sol.tableWidget.setItem(0, 5, QtWidgets.QTableWidgetItem("Power [MW]"))
+        ui_sol.tableWidget.setItem(0, 6, QtWidgets.QTableWidgetItem("P_low [MW]"))
+        ui_sol.tableWidget.setItem(0, 7, QtWidgets.QTableWidgetItem("P_high [MW]"))
+        ui_sol.tableWidget.setItem(0, 8, QtWidgets.QTableWidgetItem("Cost [$]"))
+
+
+        for table_row_number, row in enumerate(data):
+            row_number = table_row_number + offset
+            ui_sol.tableWidget.insertRow(row_number)
+            for col_number, entry in enumerate(row):
+                # fix date formatting
+                if col_number == 1:
+                    fixed_entry = database.fix_date(entry)
+                else:
+                    fixed_entry = str(entry)
+                
+                ui_sol.tableWidget.setItem(row_number, col_number, QtWidgets.QTableWidgetItem(fixed_entry))
+        
+    # data fetch failed
+    except Exception as e:
+        show_fail(str(e))
 
 
 # opens generator editting window

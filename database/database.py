@@ -65,9 +65,9 @@ def export_solution(Order, Key, Name, P, P_low, P_high, cost):
     if not Order:
         raise Exception("Failed to proccess order. Order ID is empty.")
 
-    # get current date and time
+    # get current date and time ymd format
     now = datetime.now()
-    dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+    dt_string = now.strftime("%Y/%m/%d %H:%M:%S")
     date, time = dt_string.split()
 
     # create db cursor
@@ -136,9 +136,9 @@ def add_generator(key, name, p_min, p_max, a, b, c):
     if search_res:
         raise Exception("Failed to add generator to database. Matching IDs.")
 
-    # get current date and time
+    # get current date and time ymd format
     now = datetime.now()
-    dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+    dt_string = now.strftime("%Y/%m/%d %H:%M:%S")
     date, time = dt_string.split()
 
     # insert the generator
@@ -191,9 +191,9 @@ def add_element(key, name, p_load, p_loss):
     if search_res:
         raise Exception("Failed to add element to database. Matching IDs.")
 
-    # get current date and time
+    # get current date and time ymd format
     now = datetime.now()
-    dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+    dt_string = now.strftime("%Y/%m/%d %H:%M:%S")
     date, time = dt_string.split()
 
     # insert the generator
@@ -226,26 +226,130 @@ def remove_element(key):
 
 
 
-# helper function to get data from database
-def get_data(table):
+# returns generator data in form of 10 x n_g table
+
+def generator_data(gen_id, gen_name, date_after, date_before):
+    # form query from input data
+    query_list = []
+    var_list = []
+
+    if gen_id:
+        query_list.append("key = ?")
+        var_list.append(gen_id)
+    
+    if gen_name:
+        query_list.append("name = ?")
+        var_list.append(gen_name)
+    
+    if date_after:
+        query_list.append("date >= ?")
+        var_list.append(date_after)
+    
+    if date_before:
+        query_list.append("date <= ?")
+        var_list.append(date_before)
+
+    return fetch_data("generators", query_list, var_list)
+
+
+
+# returns network data in form of 7 x n_g table
+
+def network_data(elem_id, elem_name, date_after, date_before):
+    # form query from input data
+    query_list = []
+    var_list = []
+
+    if elem_id:
+        query_list.append("key = ?")
+        var_list.append(elem_id)
+    
+    if elem_name:
+        query_list.append("name = ?")
+        var_list.append(elem_name)
+    
+    if date_after:
+        query_list.append("date >= ?")
+        var_list.append(date_after)
+    
+    if date_before:
+        query_list.append("date <= ?")
+        var_list.append(date_before)
+
+    return fetch_data("network", query_list, var_list)
+
+
+
+# returns current solution in form of 7 x n_g table
+
+def solution_data(order_id, generator_id, generator_name, date_after, date_before,
+                                        power_low, power_high, cost_low, cost_high):
+    # form query from input data
+    query_list = []
+    var_list = []
+
+    if order_id:
+        query_list.append("order_id = ?")
+        var_list.append(order_id)
+    
+    if generator_id:
+        query_list.append("key = ?")
+        var_list.append(generator_id)
+    
+    if generator_name:
+        query_list.append("name = ?")
+        var_list.append(generator_name)
+    
+    if date_after:
+        query_list.append("date >= ?")
+        var_list.append(date_after)
+    
+    if date_before:
+        query_list.append("date <= ?")
+        var_list.append(date_before)
+
+    if power_low:
+        query_list.append("p >= ?")
+        var_list.append(float(power_low))
+    
+    if power_high:
+        query_list.append("p <= ?")
+        var_list.append(float(power_high))
+    
+    if cost_low:
+        query_list.append("cost >= ?")
+        var_list.append(float(cost_low))
+    
+    if cost_high:
+        query_list.append("cost <= ?")
+        var_list.append(float(cost_high))
+
+    return fetch_data("results", query_list, var_list)
+
+
+
+# helper function for fetching data from database
+
+def fetch_data(table, query_list, var_list):
     # create db cursor
     conn = sqlite3.connect("database/dispatching.db")
     cur = conn.cursor()
 
-    # pull everything from table
-    cur.execute("SELECT * FROM " + table)
-    results = list(map(list, cur.fetchall()))
+    # join all queries with AND inbetween
+    query = " AND ".join(query_list)
     
-    return results
+    # pull all results where query is satisfied
+    if query_list:
+        cur.execute("SELECT * FROM " + table + " WHERE " + query, tuple(var_list))
 
-# returns generator data in form of 10 x n_g table
-def generator_data():
-    return get_data("generators")
+    # if there is no query pull all data
+    else:
+        cur.execute("SELECT * FROM " + table)
 
-# returns network data in form of 7 x n_g table
-def network_data():
-    return get_data("network")
+    return cur.fetchall()
 
-# returns current solution in form of 7 x n_g table
-def solution_data():
-    return get_data("results")
+
+# function which fixes date formatting from y/m/d to d/m/y
+def fix_date(date):
+    y, m, d = date.split("/")
+    return "/".join([d, m, y])
