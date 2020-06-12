@@ -74,6 +74,14 @@ def export_solution(Order, Key, Name, P, P_low, P_high, cost):
     conn = sqlite3.connect("database/dispatching.db")
     cur = conn.cursor()
 
+    # check if order with the same ID has been added
+    cur.execute("SELECT * FROM results WHERE order_id=?", (Order,))
+    search_res = cur.fetchone()
+
+    # if result is not empty raise exception
+    if search_res:
+        raise Exception("Failed to add result to database. Matching order ID.")
+
     # add results into db
     n_g = len(Key)
     for i in range(n_g):
@@ -118,11 +126,19 @@ def load_data():
 
 # add generator to database
 def add_generator(key, name, p_min, p_max, a, b, c):
-    # if name or key is empty immediatly raise exception
+    # if some fields are empty empty immediatly raise exception
     if not key:
         raise Exception("Failed to add generator to database. ID is empty.")
     if not name:
         raise Exception("Failed to add generator to database. Name of generator empty.")
+    if not p_min or not p_max or not a or not b or not c:
+        raise Exception("Failed to add generator to database. Some fields are empty.")
+    
+    # convert strings to floats
+    p_min, p_max, a, b, c = map(float, (p_min, p_max, a, b, c))
+
+    if p_min > p_max:
+        raise Exception("Failed to add generator to database. P_min cannot be larger than P_max.")
 
     # create db cursor
     conn = sqlite3.connect("database/dispatching.db")
@@ -178,6 +194,15 @@ def add_element(key, name, p_load, p_loss):
         raise Exception("Failed to add element to database. ID is empty.")
     if not name:
         raise Exception("Failed to add element to database. Name of element empty.")
+    if not p_load and not p_loss:
+        raise Exception("Failed to add element to database. Both P_load and P_loss fields empty.")
+
+    # hacky way to make float default to zero
+    p_load = float("0" + p_load)
+    p_loss = float("0" + p_loss)
+
+    # convert string -> float
+    p_load, p_loss = float(p_load), float(p_loss)
 
     # create db cursor
     conn = sqlite3.connect("database/dispatching.db")
@@ -351,5 +376,9 @@ def fetch_data(table, query_list, var_list):
 
 # function which fixes date formatting from y/m/d to d/m/y
 def fix_date(date):
+    # if empty return empty string
+    if not date:
+        return ""
+
     y, m, d = date.split("/")
     return "/".join([d, m, y])

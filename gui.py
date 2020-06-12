@@ -19,8 +19,8 @@ def gen_load():
     # load info from line edits
     gen_id = ui_gdata.generatorIDLineEdit.displayText()
     gen_name = ui_gdata.generatorNameLineEdit.displayText()
-    date_after = ui_gdata.dateAfterLineEdit.displayText()
-    date_before = ui_gdata.dateBeforeLineEdit.displayText()
+    date_after = database.fix_date(ui_gdata.dateAfterLineEdit.displayText())
+    date_before = database.fix_date(ui_gdata.dateBeforeLineEdit.displayText())
 
     try:
         # load data from database
@@ -69,8 +69,8 @@ def net_load():
     # load info from line edits
     elem_id = ui_ndata.elementIDLineEdit.displayText()
     elem_name = ui_ndata.elementNameLineEdit.displayText()
-    date_after = ui_ndata.dateAfterLineEdit.displayText()
-    date_before = ui_ndata.dateBeforeLineEdit.displayText()
+    date_after = database.fix_date(ui_ndata.dateAfterLineEdit.displayText())
+    date_before = database.fix_date(ui_ndata.dateBeforeLineEdit.displayText())
 
     try:
         # load data from database
@@ -116,8 +116,8 @@ def sol_load():
     order_id = ui_sol.orderIDLineEdit.displayText()
     generator_id = ui_sol.generatorIDLineEdit.displayText()
     generator_name = ui_sol.generatorNameLineEdit.displayText()
-    date_after = ui_sol.dateAfterLineEdit.displayText()
-    date_before = ui_sol.dateBeforeLineEdit.displayText()
+    date_after = database.fix_date(ui_sol.dateAfterLineEdit.displayText())
+    date_before = database.fix_date(ui_sol.dateBeforeLineEdit.displayText())
 
     power_low = ui_sol.powerLowLineEdit.displayText()
     power_high = ui_sol.powerHighLineEdit.displayText()
@@ -317,11 +317,11 @@ def add_generator():
     # just add zero so that "" is defined as zero :P
     key = ui_gen.iDLineEditin.displayText()
     name = ui_gen.nameLineEdit_add.displayText()
-    P_min = float("0" + ui_gen.pminLineEdit.displayText())
-    P_max = float("0" + ui_gen.pmaxLineEdit_2.displayText())
-    a = float("0" + ui_gen.aLineEdit.displayText())
-    b = float("0" + ui_gen.bLineEdit.displayText())
-    c = float("0" + ui_gen.cLineEdit.displayText())
+    P_min = ui_gen.pminLineEdit.displayText()
+    P_max = ui_gen.pmaxLineEdit_2.displayText()
+    a = ui_gen.aLineEdit.displayText()
+    b = ui_gen.bLineEdit.displayText()
+    c = ui_gen.cLineEdit.displayText()
 
     # add to database
     try:
@@ -371,8 +371,8 @@ def add_element():
     # just add zero so that "" is defined as zero :P
     key = ui_net.iDLineEditin.displayText()
     name = ui_net.nameLineEdit.displayText()
-    P_load = float("0" + ui_net.PowerUsageLineEdit.displayText())
-    P_loss = float("0" + ui_net.powerLossLineEdit.displayText())
+    P_load = ui_net.PowerUsageLineEdit.displayText()
+    P_loss = ui_net.powerLossLineEdit.displayText()
 
     # add to database
     try:
